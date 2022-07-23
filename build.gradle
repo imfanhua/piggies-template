@@ -1,0 +1,82 @@
+plugins {
+	id "java-library"
+	id "maven-publish"
+	id "org.jetbrains.kotlin.jvm" version "${kotlin_version}"
+	id "org.jetbrains.kotlin.plugin.serialization" version "${kotlin_version}"
+}
+
+group = project.group
+version = project.version
+
+sourceSets {
+	main.kotlin.srcDirs += 'src/main/kotlin'
+}
+
+repositories {
+	mavenCentral()
+
+	if (api_type.toLowerCase() == "spigot") {
+		maven {
+			url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+			content {
+				includeGroup 'org.bukkit'
+				includeGroup 'org.spigotmc'
+			}
+		}
+		maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+		maven { url = 'https://oss.sonatype.org/content/repositories/central' }
+	} else if (api_type.toLowerCase() == "papermc") {
+		maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+	}
+
+	maven { url 'https://jitpack.io' }
+}
+
+kotlin {
+	jvmToolchain {
+		languageVersion.set JavaLanguageVersion.of(17)
+	}
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+	kotlinOptions {
+		jvmTarget = "17"
+	}
+}
+
+dependencies {
+	if (api_type.toLowerCase() == "spigot") {
+		compileOnly "org.spigotmc:spigot-api:$bukkit_version"
+	} else if (api_type.toLowerCase() == "papermc") {
+		compileOnly "io.papermc.paper:paper-api:$bukkit_version"
+	}
+
+	compileOnly "com.github.imfanhua:piggies:$piggies_version"
+
+	compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+	compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+	compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+	compileOnly "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+	compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+	compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version"
+	compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version"
+
+	compileOnly "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:$serialization_version"
+	compileOnly "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:$serialization_version"
+	compileOnly "org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm:$serialization_version"
+
+	compileOnly "org.jetbrains.kotlinx:atomicfu-jvm:$atomicfu_version"
+	compileOnly "org.jetbrains.kotlinx:kotlinx-datetime-jvm:$datetime_version"
+}
+
+processResources {
+	duplicatesStrategy DuplicatesStrategy.INCLUDE
+	from ("${project.rootDir}/src/main/resources") {
+		filter org.apache.tools.ant.filters.ReplaceTokens, tokens: [
+				"NAME": project.name,
+				"VERSION": project.version,
+				"API": api_version,
+		]
+	}
+}

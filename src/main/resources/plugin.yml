@@ -1,0 +1,7 @@
+name: @NAME@
+version: '@VERSION@'
+main: me.fanhua.template.PiggiesTemplate$IPlugin
+api-version: @API@
+depend:
+  - Piggies
+authors: [ "FanHua (i@fanhua.me)" ]
