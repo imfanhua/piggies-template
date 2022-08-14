@@ -51,7 +51,11 @@ dependencies {
 		compileOnly "io.papermc.paper:paper-api:$bukkit_version"
 	}
 
-	compileOnly "com.github.imfanhua:piggies:$piggies_version"
+	if (piggies_version.toLowerCase() == "local") {
+		compileOnly files("./libs/piggies-api-local.jar")
+	} else {
+		compileOnly "com.github.imfanhua:piggies:$piggies_version"
+	}
 
 	compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 	compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"

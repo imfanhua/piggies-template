@@ -8,6 +8,7 @@ object PiggiesTemplate: PiggyPlugin() {
 	internal class IPlugin : Plugin(this)
 
 	override fun load() {
+		TestItem
 		TestGUI
 		logger.info("Loaded!")
 	}
