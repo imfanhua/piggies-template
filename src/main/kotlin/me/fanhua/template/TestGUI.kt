@@ -13,10 +13,7 @@ import me.fanhua.piggies.players.events.PlayerSneakSwapEvent
 import me.fanhua.piggies.plugins.events.use
 import me.fanhua.piggies.tools.data.holders.PlayerHold
 import me.fanhua.piggies.tools.data.holders.hold
-import me.fanhua.piggies.tools.items.give
-import me.fanhua.piggies.tools.items.item
-import me.fanhua.piggies.tools.items.name
-import me.fanhua.piggies.tools.items.suffix
+import me.fanhua.piggies.tools.items.*
 import me.fanhua.piggies.tools.plugins.keyed
 import me.fanhua.piggies.tools.plugins.logger
 import me.fanhua.piggies.tools.plugins.on
@@ -92,7 +89,7 @@ object TestGUI : Listener {
 			}
 		}
 
-		button(7, 5, Material.STRUCTURE_VOID.item { name("§b测试") }) { _, clicker, click ->
+		button(7, 5, target.get.skullOf { name("§b测试") }) { _, clicker, click ->
 			when (click) {
 				ClickType.LEFT -> logger.info("Data: ${TestDataPart[clicker].value++}")
 				ClickType.RIGHT -> logger.info("Data: ${TestDataPart[clicker].value--}")
