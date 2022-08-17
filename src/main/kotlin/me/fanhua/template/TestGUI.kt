@@ -58,7 +58,7 @@ object TestGUI : Listener {
 
 		var ok = false
 		val btn = button(5, 5, ICON_NONE) { _, clicker, click ->
-			if (click == ClickType.RIGHT) clicker.give(TestItem.item.clone())
+			if (click.isRightClick) clicker.give(TestItem.item.clone())
 			else if (ok) {
 				clicker.closeInventory()
 				GUI.syncOf(clicker).open(clicker)
@@ -91,9 +91,9 @@ object TestGUI : Listener {
 
 		button(7, 5, target.get.skullOf { name("§b测试") }) { _, clicker, click ->
 			when (click) {
-				ClickType.LEFT -> logger.info("Data: ${TestDataPart[clicker].value++}")
-				ClickType.RIGHT -> logger.info("Data: ${TestDataPart[clicker].value--}")
-				ClickType.DROP -> {
+				ActionType.LEFT -> logger.info("Data: ${TestDataPart[clicker].value++}")
+				ActionType.RIGHT -> logger.info("Data: ${TestDataPart[clicker].value--}")
+				ActionType.DROP -> {
 					TestDataPart[clicker].value = 0
 					logger.info("Data: 0")
 				}
